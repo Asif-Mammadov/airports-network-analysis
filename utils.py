@@ -1,7 +1,7 @@
-# TODO : implement shortest path
-import networkx as nx
-
 # Degree Connectivity
+from networkx.algorithms.shortest_paths.generic import shortest_path
+
+
 def degree_inflow(G, node):
     return G.in_degree(node)
 def degree_outflow(G, node):
@@ -14,17 +14,19 @@ def _path_length(path):
     return len(path) - 1
 
 def closeness_centrality(G, node, weight):
+    import shortest_path
     total_length = 0
     nodes = list(G.nodes())
     for dest in nodes:
         if dest != node:
-            path = nx.shortest_path(G, source=node, target=dest, weight=weight)
+            path = shortest_path.dijkstra(G, source=node, target=dest, weight=weight)
             total_length += _path_length(path)
     return total_length/len(nodes)
 
 def get_path(G, src, dst, weight):
     try:
-        return nx.shortest_path(G, src, dst, weight)
+        import shortest_path
+        return shortest_path.dijkstra(G, src, dst, weight)
     except:
         return []
     

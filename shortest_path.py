@@ -9,7 +9,7 @@ def get_min_key(distance, unvisited):
             min_key = key
     return min_key
 
-def djikstra(G, origin, dest, attr):
+def dijkstra(G, origin, dest, attr):
     import networkx as nx
     unvisited = list(G.nodes())
     distance = {}
