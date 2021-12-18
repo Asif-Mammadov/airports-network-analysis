@@ -1,9 +1,9 @@
 import pandas as pd
 from geopy import distance
 
-airports = pd.read_csv('airports.csv')
-routes = pd.read_csv('routes.csv')
-
+# arguments are the dataframes
+# example of usage :
+# print(filter(pd.read_csv('airports.csv'), pd.read_csv('routes.csv')))
 def filter(airports, routes):
   filtered = []
 
@@ -48,37 +48,21 @@ def filter(airports, routes):
       print(ind, 'The ids do not match')
       continue
 
-    filtered.append([routes['Source airport ID'][ind], routes['Destination airport ID'][ind]])
+    filtered.append([
+        routes['Source airport ID'][ind],
+        routes['Destination airport ID'][ind],
+        source_airport['Latitude'].to_string().split(' ')[-1],
+        source_airport['Longitude'].to_string().split(' ')[-1],
+        dest_airport['Latitude'].to_string().split(' ')[-1],
+        dest_airport['Longitude'].to_string().split(' ')[-1],
+        distance.distance(
+            (float(source_airport['Latitude'].to_string().split(' ')[-1]), float(source_airport['Longitude'].to_string().split(' ')[-1])),
+            (float(dest_airport['Latitude'].to_string().split(' ')[-1]), float(dest_airport['Longitude'].to_string().split(' ')[-1]))
+        ).km]
+    )
 
-  return pd.DataFrame(filtered, columns=['source_ID', 'destination_ID'])
+  return pd.DataFrame(filtered, columns=['source_ID', 'destination_ID', 'source_latitude', 'source_longtitude', 'dest_latitude', 'dest_longtitude', 'distance_km'])
 
-def routes_in_europe(routes, airports):
-  european_routes = []
+filtered_routes = filter(pd.read_csv('airports.csv'), pd.read_csv('routes.csv'))
 
-  for ind in routes.index:
-    source_airport_id = routes['source_ID'][ind]
-    dest_airport_id = routes['destination_ID'][ind]
-
-    source_airport = airports.loc[airports['Airport ID'] == int(source_airport_id)]
-    dest_airport = airports.loc[airports['Airport ID'] == int(dest_airport_id)]
-
-    if(
-      'Europe' in source_airport['Tz database time zone'].to_string() and
-      'Europe' in dest_airport['Tz database time zone'].to_string()
-    ):
-      print('+++')
-      european_routes.append([source_airport_id, dest_airport_id])
-
-  return pd.DataFrame(european_routes, columns=['source_ID', 'destination_ID'])
-
-
-filtered_routes = filter(airports, routes)
-
-european_routes = routes_in_europe(filtered_routes, airports)
-
-print(european_routes)
-
-coords_1 = (52.2296756, 21.0122287) # latitude , longtitude
-coords_2 = (52.406374, 16.9251681) # latitude , longtitude
-
-print(distance.distance(coords_1, coords_2).km) 
+print(filtered_routes)
