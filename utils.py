@@ -18,7 +18,8 @@ def closeness_centrality(G, node, weight):
     nodes = list(G.nodes())
     for dest in nodes:
         if dest != node:
-            path = shortest_path.dijkstra(G, source=node, target=dest, weight=weight)
+            # path = shortest_path.dijkstra(G, source=node, target=dest, weight=weight)
+            path = shortest_path.dijkstra(G, origin=node, dest=dest, attr=weight)
             total_length += _path_length(path)
     return total_length/len(nodes)
 
