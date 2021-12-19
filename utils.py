@@ -1,6 +1,4 @@
 # Degree Connectivity
-from networkx.algorithms.shortest_paths.generic import shortest_path
-
 
 def degree_inflow(G, node):
     return G.in_degree(node)
