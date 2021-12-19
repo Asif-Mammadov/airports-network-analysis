@@ -55,14 +55,21 @@ def network_density(G):
         total_degree += degree(G, node)
     return total_degree/(len(nodes) * (len(nodes) - 1))
 
-# Network Diameter
-def network_diameter(G, weight):
-    pathes = get_all_pathes(G, weight)
+
+def max_path(pathes):
+    m_path = []
     path_len = 0
     for path in pathes.values():
         if len(path) > path_len:
             path_len = len(path)
-    return path_len
+            m_path = path
+    return m_path
+
+# Network Diameter
+def network_diameter(G, weight):
+    pathes = get_all_pathes(G, weight)
+    m_path = len(max_path(pathes))
+    return m_path
 
 # Network Average Path Length
 def network_average_path_length(G, weight):
