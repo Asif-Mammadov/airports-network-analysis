@@ -9,7 +9,6 @@ def degree_outflow(G, node):
 def degree(G, node):
     return G.degree(node)
 
-
 def _path_length(path):
     return len(path) - 1
 
