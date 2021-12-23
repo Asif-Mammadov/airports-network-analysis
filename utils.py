@@ -11,14 +11,16 @@ def _path_length(path):
     return len(path) - 1
 
 def closeness_centrality(G, node, weight):
-    import shortest_path
+    import networkx as nx
     total_length = 0
     nodes = list(G.nodes())
     for dest in nodes:
         if dest != node:
-            # path = shortest_path.dijkstra(G, source=node, target=dest, weight=weight)
-            path = shortest_path.dijkstra(G, origin=node, dest=dest, attr=weight)
-            total_length += _path_length(path)
+            try:
+                path = nx.shortest_path(G, node, dest, weight)
+                total_length += _path_length(path)
+            except:
+                continue
     return total_length/len(nodes)
 
 def get_path(G, src, dst, weight):
