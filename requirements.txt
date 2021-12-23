@@ -3,3 +3,4 @@ pandas
 matplotlib
 geopy
 requests
+folium
